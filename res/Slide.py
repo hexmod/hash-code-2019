@@ -15,4 +15,16 @@ class Slide:
             res += " " + str(self.pics[1].getId())
         return res
 
+    def getTags(self):
+        if len(self.pics) == 2:
+            return list(set(self.pics[0].getTags() + self.pics[1].getTags()))
+        else:
+            return self.pics[0].getTags()
+
+    def calculateScore(self, slide):
+        aa = len(set(self.getTags()).intersection(set(slide.getTags())))
+        diff1 = len(set(self.getTags()).difference(set(slide.getTags())))
+        diff2 = len(set(slide.getTags()).difference(set(self.getTags())))
+        return min(aa, diff1, diff2)
+
 
