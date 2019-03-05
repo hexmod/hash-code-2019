@@ -19,19 +19,34 @@ for line in data:
     count += 1
 data.close()
 
-# Group the verticals together
+# Extract verticals
 slides = []
-lastVertical = None
+verticals = []
 for pic in pictures:
     if pic.isVertical():
-        if lastVertical:
-            slides.append(Slide(lastVertical, pic))
-            lastVertical = None
-        else:
-            lastVertical = pic
+        verticals.append(pic)
     else:
         slides.append(Slide(pic))
 
+
+# Sort verticals
+if len(verticals) > 0:
+    while len(verticals) > 2:
+        found = False
+        unique = verticals[0].uniqueTags(verticals[1])
+        for y in range(2, len(verticals) - 1):
+            if verticals[0].uniqueTags(verticals[y]) > unique:
+                slides.append(Slide(verticals[0], verticals[y]))
+                verticals.pop(0)
+                verticals.pop(y)
+                found = True
+                break
+        if not found:
+            slides.append(Slide(verticals[0], verticals[1]))
+            verticals.pop(0)
+            verticals.pop(1)
+
+    slides.append(Slide(verticals[0], verticals[1]))
 
 # Sort slides
 sortedSlides = slides

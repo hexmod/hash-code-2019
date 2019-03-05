@@ -14,3 +14,9 @@ class Picture:
 
     def getId(self):
         return self.id
+
+    def getTags(self):
+        return self.tags
+
+    def uniqueTags(self, picture2):
+        return len(set(self.tags + picture2.getTags()))
